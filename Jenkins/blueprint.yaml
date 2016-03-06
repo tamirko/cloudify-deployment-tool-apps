@@ -14,7 +14,7 @@ inputs:
     type: string
     type: string
   jenkins_security_group:
-    default: 'jenkins_security_group'
+    default: 'jenkins_security_group1'
   jenkins_user_first_name:
     type: 'string'
   jenkins_user_name:
