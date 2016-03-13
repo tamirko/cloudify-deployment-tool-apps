@@ -170,6 +170,6 @@ outputs:
     management_ui:
       description: XAP UI URL
       value:
-        ip: {  get_attribute: [ xap_management_vm,  floating_ip_address ] }
-        management_url: { concat: ['http://', { get_attribute: [xap_management_vm, floating_ip_address] },':', { get_property: [webui, webui_port] }] }
+        ip: {  get_attribute: [ floatingip,  floating_ip_address ] }
+        management_url: { concat: ['http://', { get_attribute: [floatingip, floating_ip_address] },':', { get_property: [webui, webui_port] }] }
         port: 7104
