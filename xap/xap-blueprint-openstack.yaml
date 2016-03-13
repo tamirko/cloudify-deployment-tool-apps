@@ -12,15 +12,15 @@ imports:
 inputs:
     xap_management_agent_user:
         default: "ubuntu"
-    xap_management_image:
+    xap_management_vm_image:
         type: string
-    xap_management_flavor:
+    xap_management_vm_flavor:
         type: string
-    xxap_management_agent_user:
+    xap_container_agent_user:
         default: "ubuntu"
-    xxap_management_image:
+    xap_container_vm_image:
         type: string
-    xxap_management_flavor:
+    xap_container_vm_flavor:
         type: string
 
 node_templates:
