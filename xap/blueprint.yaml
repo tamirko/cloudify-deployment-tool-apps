@@ -34,7 +34,7 @@ node_templates:
             type: cloudify.openstack.nodes.SecurityGroup
             properties:
                 security_group:
-                    name: { concat: [ { get_input: mngr_resources_prefix } , { get_input: xap_management_vm_sec_grp } ] }
+                    name: { get_input: xap_management_vm_sec_grp }
                 rules:
                     - remote_ip_prefix: 0.0.0.0/0
                       port: 8099
@@ -64,7 +64,7 @@ node_templates:
             type: cloudify.openstack.nodes.SecurityGroup
             properties:
                 security_group:
-                    name: { concat: [ { get_input: mngr_resources_prefix } , { get_input: xap_container_vm_sec_grp } ] }
+                    name: { get_input: xap_container_vm_sec_grp }
                 rules:
                     - remote_ip_prefix: 0.0.0.0/0
                       port_range_min: 7122
@@ -96,7 +96,7 @@ node_templates:
                 server:
                     image: { get_input: xap_management_vm_image }
                     flavor: { get_input: xap_management_vm_flavor }
-                    security_groups: [ { get_input: xap_management_vm_sec_grp } ]
+                    security_groups: { concat: [ { get_input: mngr_resources_prefix } , { get_input: xap_management_vm_sec_grp } ] }
             relationships:
                 - target: floatingip
                   type: cloudify.openstack.server_connected_to_floating_ip
@@ -116,7 +116,7 @@ node_templates:
                 server:
                     image: { get_input: xap_container_vm_image }
                     flavor: { get_input: xap_container_vm_flavor }
-                    security_groups: [ { get_input: xap_container_vm_sec_grp } ]
+                    security_groups: { concat: [ { get_input: mngr_resources_prefix } , { get_input: xap_container_vm_sec_grp } ] }
             relationships:
                 - target: xap_container_security_group
                   type: cloudify.openstack.server_connected_to_security_group
