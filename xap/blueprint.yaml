@@ -26,14 +26,15 @@ inputs:
         type: string
     xap_container_vm_sec_grp:
         type: string
-
+    mngr_resources_prefix:
+        default: "v2205_"
 
 node_templates:
         xap_management_security_group:
             type: cloudify.openstack.nodes.SecurityGroup
             properties:
                 security_group:
-                    name: { get_input: xap_management_vm_sec_grp }
+                    name: { concat: [ { get_input: mngr_resources_prefix } , { get_input: xap_management_vm_sec_grp } ] }
                 rules:
                     - remote_ip_prefix: 0.0.0.0/0
                       port: 8099
@@ -63,7 +64,7 @@ node_templates:
             type: cloudify.openstack.nodes.SecurityGroup
             properties:
                 security_group:
-                    name: { get_input: xap_container_vm_sec_grp }
+                    name: { concat: [ { get_input: mngr_resources_prefix } , { get_input: xap_container_vm_sec_grp } ] }
                 rules:
                     - remote_ip_prefix: 0.0.0.0/0
                       port_range_min: 7122
