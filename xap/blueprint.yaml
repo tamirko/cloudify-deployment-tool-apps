@@ -100,7 +100,7 @@ node_templates:
                 - target: floatingip
                   type: cloudify.openstack.server_connected_to_floating_ip
                 - target: xap_management_security_group
-                  type: cloudify.relationships.depends_on
+                  type: cloudify.openstack.server_connected_to_security_group
 
         floatingip:
             type: cloudify.openstack.nodes.FloatingIP
@@ -118,7 +118,7 @@ node_templates:
                     security_groups: [ { get_input: xap_container_vm_sec_grp } ]
             relationships:
                 - target: xap_container_security_group
-                  type: cloudify.relationships.depends_on
+                  type: cloudify.openstack.server_connected_to_security_group
 
         xap_management:
             type: xap_type
