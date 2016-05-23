@@ -94,7 +94,7 @@ node_templates:
                 server:
                     image: { get_input: xap_management_vm_image }
                     flavor: { get_input: xap_management_vm_flavor }
-                    security_groups: { get_input: xap_management_vm_sec_grp }
+                    security_groups: [ { get_input: xap_management_vm_sec_grp } ]
             relationships:
                 - target: floatingip
                   type: cloudify.openstack.server_connected_to_floating_ip
@@ -114,7 +114,7 @@ node_templates:
                 server:
                     image: { get_input: xap_container_vm_image }
                     flavor: { get_input: xap_container_vm_flavor }
-                    security_groups: { get_input: xap_container_vm_sec_grp }
+                    security_groups: [ { get_input: xap_container_vm_sec_grp } ]
             relationships:
                 - target: xap_container_security_group
                   type: cloudify.openstack.server_connected_to_security_group
