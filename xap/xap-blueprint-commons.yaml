@@ -170,6 +170,7 @@ outputs:
     management_ui:
       description: XAP UI URL
       value:
-        ip: {  get_attribute: [ floatingip,  floating_ip_address ] }
         management_url: { concat: ['http://', { get_attribute: [floatingip, floating_ip_address] },':', { get_property: [webui, webui_port] }] }
+        butterfly_url: { concat: ['http://', { get_attribute: [floatingip, floating_ip_address] },':', { get_property: [demo_shell, port] }] }
+        ip: {  get_attribute: [ floatingip,  floating_ip_address ] }
         port: 7104
