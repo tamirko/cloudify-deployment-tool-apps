@@ -90,7 +90,8 @@ node_types:
                 default: ''
             download_url:
                 type: string
-                default: 'http://repository.cloudifysource.org/com/gigaspaces/xap-core/10.1.0-12593-M11/gigaspaces-xap-premium-10.1.0-m11-b12593.zip'
+                #default: 'http://repository.cloudifysource.org/com/gigaspaces/xap-core/10.1.0-12593-M11/gigaspaces-xap-premium-10.1.0-m11-b12593.zip'
+                default: 'http://gigaspaces-repository-eu.s3.amazonaws.com/com/gigaspaces/cust/gigaspaces-xap-premium-11.0.0-ga-b14800_eval.zip'
             license_key:
                 type: string
                 default: ''
