@@ -40,9 +40,9 @@ def deploy_gateway_space(**kwargs):
         script_path
     ]
     my_env = os.environ.copy()
-    my_env['LOOKUPLOCATORS'] = locators
+    my_env['XAP_LOOKUP_LOCATORS'] = locators
 
-    my_env['NIC_ADDR'] = ip
+    my_env['XAP_NIC_ADDRESS'] = ip
     ctx.logger.info("Executing: %s", space_deployment_command)
     output = subprocess.check_output(space_deployment_command)
     ctx.logger.info("Finished executing, output: %s", output)
@@ -86,8 +86,8 @@ def deploy_gateway_pu(**kwargs):
     ]
 
     my_env = os.environ.copy()
-    my_env['LOOKUPLOCATORS'] = locators
-    my_env['NIC_ADDR'] = ip
+    my_env['XAP_LOOKUP_LOCATORS'] = locators
+    my_env['XAP_NIC_ADDRESS'] = ip
     ctx.logger.info("Executing: %s", gateway_deployment_command)
     output = subprocess.check_output(gateway_deployment_command, env=my_env)
     ctx.logger.info("Finished executing, output: %s", output)
@@ -112,8 +112,8 @@ def deploy_rest(**kwargs):
 
     my_env = os.environ.copy()
     locators = ",".join([line.strip() for line in open('/tmp/locators')])
-    my_env['LOOKUPLOCATORS'] = locators
-    my_env['NIC_ADDR'] = ip
+    my_env['XAP_LOOKUP_LOCATORS'] = locators
+    my_env['XAP_NIC_ADDRESS'] = ip
     ctx.logger.info("Executing: %s", rest_deployment_command)
     output = subprocess.check_output(rest_deployment_command, env=my_env)
     ctx.logger.info("Finished executing, output: %s", output)

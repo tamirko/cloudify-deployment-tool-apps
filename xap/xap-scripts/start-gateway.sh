@@ -3,7 +3,7 @@ set -x
 space_name=$(ctx node properties space_name)
 gsc_cnt=$(ctx node properties gsc_cnt)
 zones=$(ctx node properties zones)
-GSC_JAVA_OPTIONS=$(ctx node properties GSC_JAVA_OPTIONS)
+XAP_GSC_OPTIONS=$(ctx node properties GSC_JAVA_OPTIONS)
 lrmi_comm_min_port=$(ctx node properties lrmi_comm_min_port)
 lrmi_comm_max_port=$(ctx node properties lrmi_comm_max_port)
 
@@ -17,27 +17,27 @@ XAPDIR=`cat /tmp/gsdir`  # left by install script
 # Update IP
 interfacename=$(ctx node properties interfacename)
 IP_ADDR=$(ip addr | grep inet | grep ${interfacename} | awk -F" " '{print $2}'| sed -e 's/\/.*$//')
-export NIC_ADDR=${IP_ADDR}
+export XAP_NIC_ADDRESS=${IP_ADDR}
 ctx logger info "About to post IP address ${IP_ADDR}"
 
 ctx instance runtime_properties "ip_address" ${IP_ADDR}
 
 export LOOKUPGROUPS=
-export GSA_JAVA_OPTIONS
-export LUS_JAVA_OPTIONS
-export GSM_JAVA_OPTIONS
-export GSC_JAVA_OPTIONS
+export XAP_GSA_OPTIONS
+export XAP_LUS_OPTIONS
+export XAP_GSM_OPTIONS
+export XAP_GSC_OPTIONS
 
-LOOKUPLOCATORS=$IP_ADDR
+XAP_LOOKUP_LOCATORS=$IP_ADDR
 if [ -f "/tmp/locators" ]; then
-	LOOKUPLOCATORS=""
+	XAP_LOOKUP_LOCATORS=""
 	for line in $(cat /tmp/locators); do
-		LOOKUPLOCATORS="${LOOKUPLOCATORS}${line},"
+		XAP_LOOKUP_LOCATORS="${XAP_LOOKUP_LOCATORS}${line},"
 	done
-  	LOOKUPLOCATORS=${LOOKUPLOCATORS%%,}  #trim trailing comma
+  	XAP_LOOKUP_LOCATORS=${XAP_LOOKUP_LOCATORS%%,}  #trim trailing comma
 fi
-export LOOKUPLOCATORS
-ctx logger info "LOOKUPLOCATORS: ${LOOKUPLOCATORS}"
+export XAP_LOOKUP_LOCATORS
+ctx logger info "XAP_LOOKUP_LOCATORS: ${XAP_LOOKUP_LOCATORS}"
 # Write empty NAT mapping file (required by mapper)
 echo > /tmp/network_mapping.config
 
@@ -48,15 +48,15 @@ if [ -n "${zones}" ]; then
 else
 	ZONES="${space_name}-gw"
 fi
-export EXT_JAVA_OPTIONS="-Dcom.gs.multicast.enabled=false -Dcom.gs.transport_protocol.lrmi.network-mapping-file=/tmp/network_mapping.config -Dcom.gs.transport_protocol.lrmi.network-mapper=org.openspaces.repl.natmapper.ReplNatMapper"
-export EXT_JAVA_OPTIONS="${EXT_JAVA_OPTIONS} -Dcom.gs.zones=${ZONES}"
-#export GSC_JAVA_OPTIONS="$GSC_JAVA_OPTIONS -Dcom.gs.transport_protocol.lrmi.bind-port=${commport}"
+export XAP_EXT_OPTIONS="-Dcom.gs.multicast.enabled=false -Dcom.gs.transport_protocol.lrmi.network-mapping-file=/tmp/network_mapping.config -Dcom.gs.transport_protocol.lrmi.network-mapper=org.openspaces.repl.natmapper.ReplNatMapper"
+export XAP_EXT_OPTIONS="${XAP_EXT_OPTIONS} -Dcom.gs.zones=${ZONES}"
+#export XAP_GSC_OPTIONS="$XAP_GSC_OPTIONS -Dcom.gs.transport_protocol.lrmi.bind-port=${commport}"
 
 
 GROOVY=$XAPDIR/tools/groovy/bin/groovy
 
 if [ "$PS" = "" ]; then  #no gsa running already
-	export EXT_JAVA_OPTIONS="${EXT_JAVA_OPTIONS}  -Dcom.gs.transport_protocol.lrmi.bind-port=$lrmi_comm_min_port-$lrmi_comm_max_port -Dcom.gigaspaces.start.httpPort=7104 -Dcom.gigaspaces.system.registryPort=7102"
+	export XAP_EXT_OPTIONS="${XAP_EXT_OPTIONS}  -Dcom.gs.transport_protocol.lrmi.bind-port=$lrmi_comm_min_port-$lrmi_comm_max_port -Dcom.gigaspaces.start.httpPort=7104 -Dcom.gigaspaces.system.registryPort=7102"
 
 	ctx logger info "NO GSA IS RUNNING!"
 
@@ -70,9 +70,9 @@ else
 
 	ctx logger info "GSA already running"
 
-	ctx logger info "calling:  $GROOVY /tmp/startgsc.groovy ${interfacename} ${gsc_cnt} \"$GSC_JAVA_OPTIONS $EXT_JAVA_OPTIONS\""
+	ctx logger info "calling:  $GROOVY /tmp/startgsc.groovy ${interfacename} ${gsc_cnt} \"$XAP_GSC_OPTIONS $XAP_EXT_OPTIONS\""
 
-	$GROOVY /tmp/startgsc.groovy ${interfacename} ${gsc_cnt} "$GSC_JAVA_OPTIONS $EXT_JAVA_OPTIONS" > "/tmp/startgsc_gateway$(date).log"
+	$GROOVY /tmp/startgsc.groovy ${interfacename} ${gsc_cnt} "$XAP_GSC_OPTIONS $XAP_EXT_OPTIONS" > "/tmp/startgsc_gateway$(date).log"
 
 	ctx logger info "called startgsc"
 

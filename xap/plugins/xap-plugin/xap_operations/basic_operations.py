@@ -49,8 +49,8 @@ def deploy_grid(ctx, **kwargs):
 
     my_env = os.environ.copy()
     locators = ",".join([line.strip() for line in open('/tmp/locators')])
-    my_env['LOOKUPLOCATORS'] = locators
-    my_env['NIC_ADDR'] = ip
+    my_env['XAP_LOOKUP_LOCATORS'] = locators
+    my_env['XAP_NIC_ADDRESS'] = ip
     ctx.logger.info("Executing: %s", deployment_command)
     output = subprocess.check_output(deployment_command, env=my_env)
     ctx.logger.info("Finished executing, output: %s", output)
@@ -71,8 +71,8 @@ def undeploy_grid(ctx, **kwargs):
 
     my_env = os.environ.copy()
     locators = ",".join([line.strip() for line in open('/tmp/locators')])
-    my_env['LOOKUPLOCATORS'] = locators
-    my_env['NIC_ADDR'] = ip
+    my_env['XAP_LOOKUP_LOCATORS'] = locators
+    my_env['XAP_NIC_ADDRESS'] = ip
     ctx.logger.info("Executing: %s", deployment_command)
     output = subprocess.check_output(deployment_command, env=my_env)
     ctx.logger.info("Finished executing, output: %s", output)
@@ -116,8 +116,8 @@ def deploy_pu(ctx, **kwargs):
 
     my_env = os.environ.copy()
     locators = ",".join([line.strip() for line in open('/tmp/locators')])
-    my_env['LOOKUPLOCATORS'] = locators
-    my_env['NIC_ADDR'] = ip
+    my_env['XAP_LOOKUP_LOCATORS'] = locators
+    my_env['XAP_NIC_ADDRESS'] = ip
     ctx.logger.info("Executing: %s", deployment_command)
     output = subprocess.check_output(deployment_command, env=my_env)
     ctx.logger.info("Finished executing, output: %s", output)
