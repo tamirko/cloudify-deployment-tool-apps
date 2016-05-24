@@ -1,10 +1,10 @@
 #!/bin/bash
 
 export LOOKUPGROUPS=
-export GSA_JAVA_OPTIONS=$(ctx -node properties GSA_JAVA_OPTIONS)
-export LUS_JAVA_OPTIONS=$(ctx node properties LUS_JAVA_OPTIONS)
-export GSM_JAVA_OPTIONS=$(ctx node properties GSM_JAVA_OPTIONS)
-export GSC_JAVA_OPTIONS=$(ctx node properties GSC_JAVA_OPTIONS)
+export XAP_GSA_OPTIONS=$(ctx -node properties GSA_JAVA_OPTIONS)
+export XAP_LUS_OPTIONS=$(ctx node properties LUS_JAVA_OPTIONS)
+export XAP_GSM_OPTIONS=$(ctx node properties GSM_JAVA_OPTIONS)
+export XAP_GSC_OPTIONS=$(ctx node properties GSC_JAVA_OPTIONS)
 gsm_cnt=$(ctx -j node properties gsm_cnt)
 global_gsm_cnt=$(ctx -j node properties global_gsm_cnt)
 lus_cnt=$(ctx -j node properties lus_cnt)
@@ -27,26 +27,27 @@ ip=$(ctx instance runtime_properties ip_address)
 
 IP_ADDR=$ip
 
-LOOKUPLOCATORS=$IP_ADDR  #default to local
+XAP_LOOKUP_LOCATORS=$IP_ADDR  #default to local
 if [ -f "/tmp/locators" ]; then
-	LOOKUPLOCATORS=""
+	XAP_LOOKUP_LOCATORS=""
 	for line in $(cat /tmp/locators); do
 		if [ "$line" != "$IP_ADDR" ]; then
-			LOOKUPLOCATORS="${LOOKUPLOCATORS}${line},"
+			XAP_LOOKUP_LOCATORS="${XAP_LOOKUP_LOCATORS}${line},"
 		fi
 	done
-  	LOOKUPLOCATORS=${LOOKUPLOCATORS%%,}  #trim trailing comma
+  	XAP_LOOKUP_LOCATORS=${XAP_LOOKUP_LOCATORS%%,}  #trim trailing comma
 fi
 if [ "$lus_cnt" != 0 ]; then
 	echo "${IP_ADDR}" >> /tmp/locators
-	LOOKUPLOCATORS="${IP_ADDR},${LOOKUPLOCATORS}"
+	XAP_LOOKUP_LOCATORS="${IP_ADDR},${XAP_LOOKUP_LOCATORS}"
 fi
 
-export LOOKUPLOCATORS
-export NIC_ADDR=${IP_ADDR}
-export EXT_JAVA_OPTIONS="-Dcom.gs.multicast.enabled=false -Dcom.gs.transport_protocol.lrmi.bind-port=$lrmi_comm_min_port-$lrmi_comm_max_port -Dcom.gigaspaces.start.httpPort=7104 -Dcom.gigaspaces.system.registryPort=7102"
+export XAP_LOOKUP_LOCATORS
+export XAP_NIC_ADDRESS=${IP_ADDR}
 
-export GSC_JAVA_OPTIONS="$GSC_JAVA_OPTIONS -Dcom.gs.zones=${zones}"
+export XAP_EXT_OPTIONS="-Dcom.gs.multicast.enabled=false -Dcom.gs.transport_protocol.lrmi.bind-port=$lrmi_comm_min_port-$lrmi_comm_max_port -Dcom.gigaspaces.start.httpPort=7104 -Dcom.gigaspaces.system.registryPort=7102"
+
+export XAP_GSC_OPTIONS="$XAP_GSC_OPTIONS -Dcom.gs.zones=${zones}"
 
 PS=`ps -eaf|grep -v grep|grep GSA`
 
@@ -70,8 +71,8 @@ else #running local cloud
 	fi
 	if [ $gsc_cnt -gt 0 ]; then
 		GROOVY=$XAPDIR/tools/groovy/bin/groovy
-		ctx logger info "calling:  $GROOVY /tmp/startgsc.groovy ${interfacename} ${gsc_cnt} \"$GSC_JAVA_OPTIONS $EXT_JAVA_OPTIONS\""
-		$GROOVY /tmp/startgsc.groovy ${interfacename} ${gsc_cnt} "$GSC_JAVA_OPTIONS $EXT_JAVA_OPTIONS" > "/tmp/startgsc_xap$(date).log"
+		ctx logger info "calling:  $GROOVY /tmp/startgsc.groovy ${interfacename} ${gsc_cnt} \"$XAP_GSC_OPTIONS $XAP_EXT_OPTIONS\""
+		$GROOVY /tmp/startgsc.groovy ${interfacename} ${gsc_cnt} "$XAP_GSC_OPTIONS $XAP_EXT_OPTIONS" > "/tmp/startgsc_xap$(date).log"
 	fi
 
 fi
