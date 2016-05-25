@@ -24,6 +24,10 @@ else
    sudo apt-get -qq -f --no-upgrade install unzip || exit $?
 fi
 
+export currIpAddr=`hostname -I`
+export currServerName=`hostname`
+sudo sed -i -e "s/127.0.0.1 localhost/&\n$currIpAddr$currServerName/g" /etc/hosts
+
 # Set runtime properties
 interfacename=$(ctx node properties interfacename)
 ctx logger info "INTERFACENAME: ${interfacename}"
