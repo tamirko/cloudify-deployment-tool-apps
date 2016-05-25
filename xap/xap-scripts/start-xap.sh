@@ -44,6 +44,7 @@ if [ "$lus_cnt" != 0 ]; then
 	XAP_LOOKUP_LOCATORS="${IP_ADDR},${XAP_LOOKUP_LOCATORS}"
 fi
 
+XAP_LOOKUP_LOCATORS=${XAP_LOOKUP_LOCATORS%%,}  #trim trailing another comma (if exists)
 ctx logger info "final XAP_LOOKUP_LOCATORS is ${XAP_LOOKUP_LOCATORS}"
 export XAP_LOOKUP_LOCATORS
 export XAP_NIC_ADDRESS=${IP_ADDR}
