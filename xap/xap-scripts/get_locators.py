@@ -23,10 +23,21 @@ Gets the lookup locator for the related node running the lus
 ip_address = ctx.target.instance.runtime_properties['ip_address']
 lus_port = ctx.target.node.properties['lus_port']
 locator = "%s" % ip_address
-if(lus_port!=0):
-    locator="%s:%d" % (locator,lus_port)
+if lus_port != 0:
+    locator = "%s:%d" % (locator, lus_port)
 
-ctx.logger.info("The locator is {} ".format(locator))
+ctx.logger.info("The locator private ip is {} ".format(locator))
+
+with open("/tmp/locators", 'a+') as env_file:
+    env_file.write("{}\n".format(locator))
+
+
+ip_address = ctx.target.instance.runtime_properties['public_ip_address']
+locator = "%s" % ip_address
+if lus_port != 0:
+    locator = "%s:%d" % (locator, lus_port)
+
+ctx.logger.info("The locator public is {} ".format(locator))
 
 with open("/tmp/locators", 'a+') as env_file:
     env_file.write("{}\n".format(locator))

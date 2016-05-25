@@ -36,6 +36,13 @@ ctx logger info "About to post IP address ${IP_ADDR}"
 
 ctx instance runtime-properties ip_address $IP_ADDR
 
+PUBLIC_IP_ADDR=$(wget -qO- ipinfo.io/ip)
+ctx logger info "About to post PUBLIC IP address ${PUBLIC_IP_ADDR}"
+
+ctx instance runtime-properties public_ip_address $PUBLIC_IP_ADDR
+
+
+
 # Get XAP
 
 DIR=/tmp/
