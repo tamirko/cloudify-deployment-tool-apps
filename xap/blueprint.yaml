@@ -46,8 +46,8 @@ node_templates:
                       port_range_min: 7122
                       port_range_max: 7222
                     - remote_ip_prefix: 0.0.0.0/0
-                      port_range_min: 40000
-                      port_range_max: 50000
+                      port_range_min: 9100
+                      port_range_max: 65000
                     - direction: egress
                       remote_ip_prefix: 0.0.0.0/0
                       port_range_min: 7122
@@ -66,8 +66,8 @@ node_templates:
                       port_range_max: 7104
                     - direction: egress
                       remote_ip_prefix: 0.0.0.0/0
-                      port_range_min: 40000
-                      port_range_max: 50000
+                      port_range_min: 9100
+                      port_range_max: 65000
 
         xap_container_security_group:
             type: cloudify.openstack.nodes.SecurityGroup
@@ -79,8 +79,8 @@ node_templates:
                       port_range_min: 7122
                       port_range_max: 7222
                     - remote_ip_prefix: 0.0.0.0/0
-                      port_range_min: 40000
-                      port_range_max: 50000
+                      port_range_min: 9100
+                      port_range_max: 65000
                     - remote_ip_prefix: 0.0.0.0/0
                       port: 22
                     - direction: egress
@@ -89,8 +89,8 @@ node_templates:
                       port_range_max: 7222
                     - direction: egress
                       remote_ip_prefix: 0.0.0.0/0
-                      port_range_min: 40000
-                      port_range_max: 50000
+                      port_range_min: 9100
+                      port_range_max: 65000
                     - remote_ip_prefix: 0.0.0.0/0
                       port: 4174
                     - direction: egress
