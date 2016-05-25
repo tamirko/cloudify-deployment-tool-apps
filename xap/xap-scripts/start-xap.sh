@@ -33,6 +33,7 @@ if [ -f "/tmp/locators" ]; then
 	for line in $(cat /tmp/locators); do
 		if [ "$line" != "$IP_ADDR" ]; then
 			XAP_LOOKUP_LOCATORS="${XAP_LOOKUP_LOCATORS}${line},"
+			ctx logger info "XAP_LOOKUP_LOCATORS new from /tmp/locators is ${XAP_LOOKUP_LOCATORS}"
 		fi
 	done
   	XAP_LOOKUP_LOCATORS=${XAP_LOOKUP_LOCATORS%%,}  #trim trailing comma
@@ -42,6 +43,7 @@ if [ "$lus_cnt" != 0 ]; then
 	XAP_LOOKUP_LOCATORS="${IP_ADDR},${XAP_LOOKUP_LOCATORS}"
 fi
 
+ctx logger info "final XAP_LOOKUP_LOCATORS is ${XAP_LOOKUP_LOCATORS}"
 export XAP_LOOKUP_LOCATORS
 export XAP_NIC_ADDRESS=${IP_ADDR}
 
