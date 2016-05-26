@@ -32,6 +32,7 @@ sudo sed -i -e "s/127.0.0.1 localhost/&\n$currIpAddr$currServerName/g" /etc/host
 interfacename=$(ctx node properties interfacename)
 ctx logger info "INTERFACENAME: ${interfacename}"
 IP_ADDR=$(ip addr | grep inet | grep ${interfacename} | awk -F" " '{print $2}'| sed -e 's/\/.*$//')
+IP_ADDR=$(wget -qO- ipinfo.io/ip)
 ctx logger info "About to post IP address ${IP_ADDR}"
 
 ctx instance runtime-properties ip_address $IP_ADDR
