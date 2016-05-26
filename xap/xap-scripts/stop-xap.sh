@@ -1,7 +1,6 @@
 #!/bin/bash
 interfacename=$(ctx node properties interfacename)
 IP_ADDR=$(ip addr | grep inet | grep ${interfacename} | awk -F" " '{print $2}'| sed -e 's/\/.*$//')
-IP_ADDR=$(wget -qO- ipinfo.io/ip)
 export XAP_LOOKUP_LOCATORS=$IP_ADDR
 export XAP_NIC_ADDRESS=$IP_ADDR
 if [ -f "/tmp/locators" ]; then
