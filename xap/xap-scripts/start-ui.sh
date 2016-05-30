@@ -7,15 +7,15 @@ interfacename=$(ctx node properties interfacename)
 IP_ADDR=$(ip addr | grep inet | grep ${interfacename} | awk -F" " '{print $2}'| sed -e 's/\/.*$//')
 PUBLIC_IP_ADDR=$(wget -qO- ipinfo.io/ip)
 export XAP_LOOKUP_LOCATORS=$PUBLIC_IP_ADDR
-if [ -f "/tmp/locators" ]; then
-    XAP_LOOKUP_LOCATORS=""
-	for line in $(cat /tmp/locators); do
+#if [ -f "/tmp/locators" ]; then
+#    XAP_LOOKUP_LOCATORS=""
+#	for line in $(cat /tmp/locators); do
 		#XAP_LOOKUP_LOCATORS="${XAP_LOOKUP_LOCATORS}${line},"
-		XAP_LOOKUP_LOCATORS="${line}"
-	done
-fi
+#		XAP_LOOKUP_LOCATORS="${line}"
+#	done
+#fi
 
-XAP_LOOKUP_LOCATORS=${XAP_LOOKUP_LOCATORS%%,}  #trim another trailing comma
+# XAP_LOOKUP_LOCATORS=${XAP_LOOKUP_LOCATORS%%,}  #trim another trailing comma
 export XAP_LOOKUP_LOCATORS
 export XAP_NIC_ADDRESS=${PUBLIC_IP_ADDR}
 export XAP_EXT_OPTIONS="-Dcom.gs.multicast.enabled=false -Dcom.gs.transport_protocol.lrmi.bind-port=7122-7222 -Dcom.gigaspaces.start.httpPort=7104 -Dcom.gigaspaces.system.registryPort=7102"

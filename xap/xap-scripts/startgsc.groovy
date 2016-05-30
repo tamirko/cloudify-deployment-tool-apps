@@ -27,7 +27,7 @@ while(e.hasMoreElements()){
 
 if (ip==null) throw new RuntimeException("no ip found")
 
-ip=args[3]
+//ip=args[3]
 admin=new AdminFactory().addLocator(ip).useDaemonThreads(true).create()
 
 admin.gridServiceAgents.waitForAtLeastOne()

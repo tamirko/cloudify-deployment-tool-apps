@@ -43,7 +43,7 @@ ctx instance runtime-properties public_ip_address $PUBLIC_IP_ADDR
 
 # Get XAP
 
-DIR=/tmp/
+DIR=/tmp
 
 # check only needed for local cloud 
 if [ ! -d $DIR/xap ]; then
