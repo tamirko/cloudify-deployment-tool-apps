@@ -33,7 +33,7 @@ if [ -f "/tmp/locators" ]; then
 	XAP_LOOKUP_LOCATORS=""
 	for line in $(cat /tmp/locators); do
 		if [ "$line" != "$IP_ADDR" ]; then
-			XAP_LOOKUP_LOCATORS="${line},${XAP_LOOKUP_LOCATORS},"
+			XAP_LOOKUP_LOCATORS="${line}"
 			ctx logger info "XAP_LOOKUP_LOCATORS new from /tmp/locators is ${XAP_LOOKUP_LOCATORS}"
 		fi
 	done
@@ -42,7 +42,7 @@ if [ -f "/tmp/locators" ]; then
 fi
 if [ "$lus_cnt" != 0 ]; then
 	echo "${IP_ADDR}" >> /tmp/locators
-	XAP_LOOKUP_LOCATORS="${IP_ADDR},${XAP_LOOKUP_LOCATORS}"
+	#XAP_LOOKUP_LOCATORS="${IP_ADDR},${XAP_LOOKUP_LOCATORS}"
 fi
 
 ctx logger info "final XAP_LOOKUP_LOCATORS is ${XAP_LOOKUP_LOCATORS}"
