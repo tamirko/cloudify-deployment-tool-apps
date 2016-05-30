@@ -26,6 +26,7 @@ ctx logger info "gsm=$gsm_cnt gsc=$gsc_cnt lus=$lus_cnt"
 ip=$(ctx instance runtime_properties ip_address)
 
 IP_ADDR=$ip
+ctx logger info "IP_ADDR is ${IP_ADDR}"
 
 XAP_LOOKUP_LOCATORS=$IP_ADDR  #default to local
 if [ -f "/tmp/locators" ]; then
@@ -37,14 +38,13 @@ if [ -f "/tmp/locators" ]; then
 		fi
 	done
   	XAP_LOOKUP_LOCATORS=${XAP_LOOKUP_LOCATORS%%,}  #trim trailing comma
-  	XAP_LOOKUP_LOCATORS=${XAP_LOOKUP_LOCATORS%%,}  #trim trailing another comma (if exists)
+  	XAP_LOOKUP_LOCATORS=${XAP_LOOKUP_LOCATORS%%,}  #trim trailing comma
 fi
 if [ "$lus_cnt" != 0 ]; then
 	echo "${IP_ADDR}" >> /tmp/locators
 	XAP_LOOKUP_LOCATORS="${IP_ADDR},${XAP_LOOKUP_LOCATORS}"
 fi
 
-XAP_LOOKUP_LOCATORS=${XAP_LOOKUP_LOCATORS%%,}  #trim trailing another comma (if exists)
 ctx logger info "final XAP_LOOKUP_LOCATORS is ${XAP_LOOKUP_LOCATORS}"
 export XAP_LOOKUP_LOCATORS
 export XAP_NIC_ADDRESS=${IP_ADDR}
@@ -75,8 +75,8 @@ else #running local cloud
 	fi
 	if [ $gsc_cnt -gt 0 ]; then
 		GROOVY=$XAPDIR/tools/groovy/bin/groovy
-		ctx logger info "calling:  $GROOVY /tmp/startgsc.groovy ${interfacename} ${gsc_cnt} \"$XAP_GSC_OPTIONS $XAP_EXT_OPTIONS\""
-		$GROOVY /tmp/startgsc.groovy ${interfacename} ${gsc_cnt} "$XAP_GSC_OPTIONS $XAP_EXT_OPTIONS" > "/tmp/startgsc_xap$(date).log"
+		ctx logger info "calling:  $GROOVY /tmp/startgsc.groovy ${interfacename} ${gsc_cnt} \"$XAP_GSC_OPTIONS $XAP_EXT_OPTIONS\" ${IP_ADDR}"
+		$GROOVY /tmp/startgsc.groovy ${interfacename} ${gsc_cnt} "$XAP_GSC_OPTIONS $XAP_EXT_OPTIONS" ${IP_ADDR} > "/tmp/startgsc_xap$(date).log"
 	fi
 
 fi

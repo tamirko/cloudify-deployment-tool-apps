@@ -3,7 +3,7 @@ import org.openspaces.admin.gsa.GridServiceContainerOptions
 import java.net.NetworkInterface
 import java.util.concurrent.TimeUnit
 
-if (args.length != 3) {
+if (args.length != 4) {
 	System.err.println("Should provide arguments in the following order: interfacename gsc_count GSC_JAVA_OPTIONS. Found: "+args);
 	System.exit(1);
 }
@@ -27,6 +27,7 @@ while(e.hasMoreElements()){
 
 if (ip==null) throw new RuntimeException("no ip found")
 
+ip=args[3]
 admin=new AdminFactory().addLocator(ip).useDaemonThreads(true).create()
 
 admin.gridServiceAgents.waitForAtLeastOne()

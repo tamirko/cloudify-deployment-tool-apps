@@ -24,7 +24,7 @@ if "public_ip_address" in ctx.target.instance.runtime_properties:
     ip_address = ctx.target.instance.runtime_properties['public_ip_address']
 else:
     ip_address = ctx.target.instance.runtime_properties['ip_address']
-
+ctx.logger.info("Locator ip address is {0} ".format(ip_address))
 lus_port = ctx.target.node.properties['lus_port']
 locator = "%s" % ip_address
 if lus_port != 0:
