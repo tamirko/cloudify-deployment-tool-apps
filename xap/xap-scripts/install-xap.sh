@@ -26,9 +26,9 @@ fi
 
 export currIpAddr=`hostname -I`
 PUBLIC_IP_ADDR=$(wget -qO- ipinfo.io/ip)
-#export currIpAddr=$PUBLIC_IP_ADDR
+export currIpAddr=$PUBLIC_IP_ADDR
 export currServerName=`hostname`
-sudo sed -i -e "s/127.0.0.1 localhost/&\n$currIpAddr$currServerName/g" /etc/hosts
+sudo sed -i -e "s/127.0.0.1 localhost/&\n$currIpAddr $currServerName/g" /etc/hosts
 
 # Set runtime properties
 interfacename=$(ctx node properties interfacename)
