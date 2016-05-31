@@ -25,8 +25,10 @@ else
 fi
 
 export currIpAddr=`hostname -I`
+PUBLIC_IP_ADDR=$(wget -qO- ipinfo.io/ip)
+export currIpAddr=$PUBLIC_IP_ADDR
 export currServerName=`hostname`
-sudo sed -i -e "s/127.0.0.1 localhost/&\n$currIpAddr$currServerName/g" /etc/hosts
+sudo sed -i -e "s/127.0.0.1 localhost/&\n$currIpAddr $currServerName/g" /etc/hosts
 
 # Set runtime properties
 interfacename=$(ctx node properties interfacename)
@@ -34,7 +36,7 @@ ctx logger info "INTERFACENAME: ${interfacename}"
 IP_ADDR=$(ip addr | grep inet | grep ${interfacename} | awk -F" " '{print $2}'| sed -e 's/\/.*$//')
 ctx logger info "old ... About to post IP address ${IP_ADDR}"
 
-PUBLIC_IP_ADDR=$(wget -qO- ipinfo.io/ip)
+
 ctx logger info "About to post PUBLIC IP address ${PUBLIC_IP_ADDR}"
 ctx instance runtime-properties ip_address $PUBLIC_IP_ADDR
 ctx instance runtime-properties public_ip_address $PUBLIC_IP_ADDR
