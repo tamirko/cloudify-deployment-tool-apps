@@ -47,6 +47,7 @@ fi
 
 ctx logger info "final XAP_LOOKUP_LOCATORS is ${XAP_LOOKUP_LOCATORS}"
 export XAP_LOOKUP_LOCATORS
+IP_ADDR=$(ip addr | grep inet | grep ${interfacename} | awk -F" " '{print $2}'| sed -e 's/\/.*$//')
 export XAP_NIC_ADDRESS=${IP_ADDR}
 
 export XAP_EXT_OPTIONS="-Dcom.gs.multicast.enabled=false -Dcom.gs.transport_protocol.lrmi.bind-port=$lrmi_comm_min_port-$lrmi_comm_max_port -Dcom.gigaspaces.start.httpPort=7104 -Dcom.gigaspaces.system.registryPort=7102"

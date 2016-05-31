@@ -17,7 +17,7 @@ export XAP_LOOKUP_LOCATORS=$PUBLIC_IP_ADDR
 
 # XAP_LOOKUP_LOCATORS=${XAP_LOOKUP_LOCATORS%%,}  #trim another trailing comma
 export XAP_LOOKUP_LOCATORS
-export XAP_NIC_ADDRESS=${PUBLIC_IP_ADDR}
+export XAP_NIC_ADDRESS=${IP_ADDR}
 export XAP_EXT_OPTIONS="-Dcom.gs.multicast.enabled=false -Dcom.gs.transport_protocol.lrmi.bind-port=7122-7222 -Dcom.gigaspaces.start.httpPort=7104 -Dcom.gigaspaces.system.registryPort=7102"
 
 ctx logger info "locators=$XAP_LOOKUP_LOCATORS"
