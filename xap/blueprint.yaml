@@ -43,6 +43,8 @@ node_templates:
                     - remote_ip_prefix: 0.0.0.0/0
                       port: 9099
                     - remote_ip_prefix: 0.0.0.0/0
+                      port: 8000
+                    - remote_ip_prefix: 0.0.0.0/0
                       port_range_min: 7122
                       port_range_max: 7222
                     - remote_ip_prefix: 0.0.0.0/0
@@ -205,3 +207,36 @@ node_templates:
                   type: cloudify.relationships.contained_in
                 - target: xap_management
                   type: cloudify.relationships.depends_on
+
+        xap_client_vm:
+            type: cloudify.openstack.nodes.Server
+            instances:
+                deploy: 1
+            properties:
+                cloudify_agent:
+                    user: { get_input: xap_management_agent_user }
+                server:
+                    image: { get_input: xap_management_vm_image }
+                    flavor: { get_input: xap_management_vm_flavor }
+                    security_groups: [ { get_input: xap_management_vm_sec_grp } ]
+            relationships:
+                - target: xap_client_floatingip
+                  type: cloudify.openstack.server_connected_to_floating_ip
+                - target: xap_management_security_group
+                  type: cloudify.openstack.server_connected_to_security_group
+
+        xap_client_floatingip:
+            type: cloudify.openstack.nodes.FloatingIP
+
+
+        xap_client:
+            type: xap_type
+            relationships:
+                -   target: xap_client_vm
+                    type: cloudify.relationships.contained_in
+                -   target: webui
+                    type: cloudify.relationships.depends_on
+            interfaces:
+                cloudify.interfaces.lifecycle:
+                  create: xap-client-scripts/install-xap-client.sh
+                  start: xap-client-scripts/start-xap-client.sh
