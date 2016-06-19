@@ -176,8 +176,8 @@ outputs:
         client_url: { concat: ['http://', { get_attribute: [xap_client_vm, ip] },':8000/'] }
         client_ip: { get_attribute: [ xap_client_vm, ip ] }
 
-        public_manage_url: { concat: ['http://', { get_attribute: [floatingip, floating_ip_address] },':', { get_property: [webui, webui_port] }] }
-        public_clint_url: { concat: ['http://', { get_attribute: [xap_client_floatingip, floating_ip_address] },':8000/'] }
+        manager_public_address: { get_attribute: [floatingip, floating_ip_address] }
+        client_public_address: { get_attribute: [xap_client_floatingip, floating_ip_address] }
         #butterfly_url: { concat: ['http://', { get_attribute: [floatingip, floating_ip_address] },':', { get_property: [demo_shell, port] }] }
         #ip: {  get_attribute: [ floatingip,  floating_ip_address ] }
         #port: 7104
