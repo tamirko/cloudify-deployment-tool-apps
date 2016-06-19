@@ -22,7 +22,11 @@ if [[ ! -z $YUM_CMD ]]; then
    sudo yum -y -q install unzip || exit $?   
 else
    sudo apt-get -qq -f --no-upgrade install unzip || exit $?
+   sudo apt-get -qq -f --no-upgrade install unzip || exit $?
 fi
+
+ctx logger info "getting putty-tools"
+sudo apt-get -y install putty-tools || exit $?
 
 export currIpAddr=`hostname -I`
 PUBLIC_IP_ADDR=$(wget -qO- ipinfo.io/ip)

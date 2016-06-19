@@ -90,8 +90,8 @@ node_types:
                 default: ''
             download_url:
                 type: string
-                #default: 'http://repository.cloudifysource.org/com/gigaspaces/xap-core/10.1.0-12593-M11/gigaspaces-xap-premium-10.1.0-m11-b12593.zip'
-                default: 'https://dl.dropboxusercontent.com/u/58809323/gigaspaces-xap-premium-11.0.0-ga-b14800_eval2305.zip'
+                #default: 'https://dl.dropboxusercontent.com/u/58809323/gigaspaces-xap-premium-11.0.0-ga-b14800_eval2305.zip'
+                default: 'http://gigaspaces-repository-eu.s3.amazonaws.com/com/gigaspaces/cust/gigaspaces-xap-premium-11.0.0-ga-b14800_eval.zip'
             license_key:
                 type: string
                 default: ''
@@ -171,8 +171,13 @@ outputs:
     management_ui:
       description: XAP UI URL
       value:
-        management_url: { concat: ['http://', { get_attribute: [floatingip, floating_ip_address] },':', { get_property: [webui, webui_port] }] }
-        client_url: { concat: ['http://', { get_attribute: [xap_client_floatingip, floating_ip_address] },':8000/'] }
+        management_url: { concat: ['http://', { get_attribute: [xap_management_vm, ip] },':', { get_property: [webui, webui_port] }] }
+        management_ip: { get_attribute: [ xap_management_vm, ip ] }
+        client_url: { concat: ['http://', { get_attribute: [xap_client_vm, ip] },':8000/'] }
+        client_ip: { get_attribute: [ xap_client_vm, ip ] }
+
+        public_manage_url: { concat: ['http://', { get_attribute: [floatingip, floating_ip_address] },':', { get_property: [webui, webui_port] }] }
+        public_clint_url: { concat: ['http://', { get_attribute: [xap_client_floatingip, floating_ip_address] },':8000/'] }
         #butterfly_url: { concat: ['http://', { get_attribute: [floatingip, floating_ip_address] },':', { get_property: [demo_shell, port] }] }
         #ip: {  get_attribute: [ floatingip,  floating_ip_address ] }
         #port: 7104

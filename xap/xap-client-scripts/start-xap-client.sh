@@ -9,10 +9,16 @@ cd ~/
 touch xxx
 touch yyy
 pushd ~/.ssh/
-private_key_name="private_key_${deployment_id}"
+private_key_name_prefix="private_key_${deployment_id}"
+private_key_name="${private_key_name_prefix}.pem"
+windows_private_key_name="${private_key_name_prefix}.ppk"
 ssh-keygen -t rsa -C "xap@gigaspaces.com" -f "${private_key_name}" -q -N ""
+puttygen ${private_key_name} -o ${windows_private_key_name}
 chmod 400 ${private_key_name}
+chmod 400 ${windows_private_key_name}
 cp -rp ${private_key_name} ~/
+cp -rp ${windows_private_key_name} ~/
+
 cat ${private_key_name}.pub >> authorized_keys
 popd
 COMMAND="python -m SimpleHTTPServer 8000"
