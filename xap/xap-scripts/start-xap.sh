@@ -61,20 +61,41 @@ if [ "$PS" = "" ]; then  #no gsa running already
     if [ $lus_cnt -gt 0 ]; then
         # Manager
         ctx logger info "Installing influxdb"
+        currWd="`pwd`"
+        ctx logger info "currWd ${currWd}"
         wget https://dl.influxdata.com/influxdb/releases/influxdb_0.13.0_amd64.deb
+        currStatus=$?
+        ctx logger info "After wget currStatus ${currStatus}"
+
         sudo dpkg -i influxdb_0.13.0_amd64.deb
+        currStatus=$?
+        ctx logger info "After dpkg influxdb_0 currStatus ${currStatus}"
+
         sudo /etc/init.d/influxdb start
+        currStatus=$?
+        ctx logger info "After influxdb start currStatus ${currStatus}"
+
         /usr/bin/influx -execute "CREATE DATABASE mydb"
+        currStatus=$?
+        ctx logger info "After CREATE DATABASE currStatus ${currStatus}"
 
         ctx logger info "Installing grafana"
         wget https://grafanarel.s3.amazonaws.com/builds/grafana_3.0.4-1464167696_amd64.deb
+        currStatus=$?
+        ctx logger info "After wget grafana currStatus ${currStatus}"
+
         sudo dpkg -i grafana_3.0.4-1464167696_amd64.deb
+        currStatus=$?
+        ctx logger info "After dpkg grafana_3 currStatus ${currStatus}"
+
         sudo service grafana-server start
+        currStatus=$?
+        ctx logger info "After grafana-server start currStatus ${currStatus}"
     else
         #Container
         ctx logger info "Configuring influxdb in a container"
         metricsFile=$XAPDIR/config/metrics/metrics.xml
-        sudo sed -i -e "s/localhost/$XAP_MANAGEMENT/g" ${metricsFile}
+        sudo sed -i -e "s/localhost/$XAP_LOOKUP_LOCATORS/g" ${metricsFile}
         influxLine=`grep -n "reporter name=\"influxdb\"" ${metricsFile} | awk -F: ' {print $1}'`
         commentLine=`expr $influxLine - 1`
         sed -i -e "${commentLine}s/.*//" ${metricsFile}
