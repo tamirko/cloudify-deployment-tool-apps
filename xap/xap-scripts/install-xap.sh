@@ -11,9 +11,14 @@ ctx logger info "getting java"
 if [[ ! -z $YUM_CMD ]]; then
    sudo yum -y -q install java-1.7.0-openjdk || exit $?   
 else
+   sudo add-apt-repository ppa:openjdk-r/ppa
    sudo apt-get update
    sudo apt-get -f install libdevmapper-event1.02.1
-   sudo apt-get -qq --no-upgrade install openjdk-7-jdk || exit $?   
+   #sudo apt-get -qq --no-upgrade install openjdk-7-jdk || exit $?
+   sudo apt-get -qq --no-upgrade install openjdk-8-jdk || exit $?
+   #set +e
+   sudo update-java-alternatives -s /usr/lib/jvm/java-1.8.0-openjdk-amd64
+   #set -e
 fi
 
 ctx logger info "getting unzip"
