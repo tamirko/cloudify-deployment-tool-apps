@@ -60,6 +60,9 @@ if [ "$PS" = "" ]; then  #no gsa running already
 
     if [ $lus_cnt -gt 0 ]; then
         # Manager
+        DIR1=/tmp
+        mkdir -p $DIR1/tmpstuff
+        pushd $DIR1/tmpstuff
         ctx logger info "Installing influxdb"
         currWd="`pwd`"
         ctx logger info "currWd ${currWd}"
@@ -91,6 +94,7 @@ if [ "$PS" = "" ]; then  #no gsa running already
         sudo service grafana-server start
         currStatus=$?
         ctx logger info "After grafana-server start currStatus ${currStatus}"
+        popd
     else
         #Container
         ctx logger info "Configuring influxdb in a container"
