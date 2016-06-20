@@ -171,7 +171,7 @@ node_templates:
         xap_container:
             type: xap_type
             properties:
-                gsc_cnt: 1
+                gsc_cnt: 2
                 GSC_JAVA_OPTIONS: -Xms128m -Xmx128m
             relationships:
                 -   target: xap_container_vm
