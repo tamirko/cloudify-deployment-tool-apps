@@ -58,6 +58,39 @@ PS=`ps -eaf|grep -v grep|grep GSA`
 
 if [ "$PS" = "" ]; then  #no gsa running already
 
+    if [ $lus_cnt -gt 0 ]; then
+        # Manager
+        ctx logger info "Installing influxdb"
+        wget https://dl.influxdata.com/influxdb/releases/influxdb_0.13.0_amd64.deb
+        sudo dpkg -i influxdb_0.13.0_amd64.deb
+        sudo /etc/init.d/influxdb start
+        /usr/bin/influx -execute "CREATE DATABASE mydb"
+
+        ctx logger info "Installing grafana"
+        wget https://grafanarel.s3.amazonaws.com/builds/grafana_3.0.4-1464167696_amd64.deb
+        sudo dpkg -i grafana_3.0.4-1464167696_amd64.deb
+        sudo service grafana-server start
+    else
+        #Container
+        ctx logger info "Configuring influxdb in a container"
+        metricsFile=$XAPDIR/config/metrics/metrics.xml
+        sudo sed -i -e "s/localhost/$XAP_MANAGEMENT/g" ${metricsFile}
+        influxLine=`grep -n "reporter name=\"influxdb\"" ${metricsFile} | awk -F: ' {print $1}'`
+        commentLine=`expr $influxLine - 1`
+        sed -i -e "${commentLine}s/.*//" ${metricsFile}
+        endOfInfluxLine=`grep -n "\/reporter>" ${metricsFile} | awk -F: ' {print $1}'`
+        afterInfluxLine=`expr $endOfInfluxLine + 1`
+        sed -i -e "${afterInfluxLine}s/.*//" ${metricsFile}
+
+        ctx logger info "Configuring grafana in a container"
+        grafanaLine=`grep -n "\<grafana u" ${metricsFile} | awk -F: ' {print $1}'`
+        commentLine=`expr $grafanaLine - 1`
+        sed -i -e "${commentLine}s/.*//" ${metricsFile}
+        endOfGrafanaLine=`grep -n "\/grafana>" ${metricsFile} | awk -F: ' {print $1}'`
+        afterGrafanaLine=`expr $endOfGrafanaLine + 1`
+        sed -i -e "${afterGrafanaLine}s/.*//" ${metricsFile}
+    fi
+
 	ctx logger info "running $XAPDIR/bin/gs-agent.sh gsa.global.lus $global_lus_cnt gsa.lus $lus_cnt gsa.global.gsm $global_gsm_cnt gsa.gsm $gsm_cnt gsa.gsc $gsc_cnt"
 
 	nohup $XAPDIR/bin/gs-agent.sh gsa.global.lus $global_lus_cnt gsa.lus $lus_cnt gsa.global.gsm $global_gsm_cnt gsa.gsm $gsm_cnt gsa.gsc $gsc_cnt >/tmp/xap.nohup.out 2>&1 &

@@ -120,7 +120,7 @@ node_types:
                 default: 'eth0'
             port:
                 type: integer
-                default: 8080
+                default: 8989
             butterfly_repo:
                 type: string
                 default: https://github.com/CloudifySource/butterfly.git
