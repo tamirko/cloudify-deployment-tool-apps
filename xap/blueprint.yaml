@@ -81,7 +81,7 @@ node_templates:
                       port_range_min: 7122
                       port_range_max: 7222
                     - remote_ip_prefix: 0.0.0.0/0
-                      port_range_min: 9100
+                      port_range_min: 8000
                       port_range_max: 65000
                     - remote_ip_prefix: 0.0.0.0/0
                       port: 22
