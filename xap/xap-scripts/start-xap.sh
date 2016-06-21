@@ -97,6 +97,7 @@ if [ "$PS" = "" ]; then  #no gsa running already
         currStatus=$?
         ctx logger info "After grafana-server start currStatus ${currStatus}"
         popd
+        sudo sed -i -e "s/localhost/$IP_ADDR/g" ${metricsFile}
     else
         #Container
         ctx logger info "Configuring influxdb and grafana in a container"
