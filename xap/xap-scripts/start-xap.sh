@@ -58,6 +58,8 @@ PS=`ps -eaf|grep -v grep|grep GSA`
 
 if [ "$PS" = "" ]; then  #no gsa running already
 
+    metricsFile=$XAPDIR/config/metrics/metrics.xml
+
     if [ $lus_cnt -gt 0 ]; then
         # Manager
         DIR1=/tmp
@@ -97,24 +99,24 @@ if [ "$PS" = "" ]; then  #no gsa running already
         popd
     else
         #Container
-        ctx logger info "Configuring influxdb in a container"
-        metricsFile=$XAPDIR/config/metrics/metrics.xml
+        ctx logger info "Configuring influxdb and grafana in a container"
         sudo sed -i -e "s/localhost/$XAP_LOOKUP_LOCATORS/g" ${metricsFile}
-        influxLine=`grep -n "reporter name=\"influxdb\"" ${metricsFile} | awk -F: ' {print $1}'`
-        commentLine=`expr $influxLine - 1`
-        sed -i -e "${commentLine}s/.*//" ${metricsFile}
-        endOfInfluxLine=`grep -n "\/reporter>" ${metricsFile} | awk -F: ' {print $1}'`
-        afterInfluxLine=`expr $endOfInfluxLine + 1`
-        sed -i -e "${afterInfluxLine}s/.*//" ${metricsFile}
-
-        ctx logger info "Configuring grafana in a container"
-        grafanaLine=`grep -n "\<grafana u" ${metricsFile} | awk -F: ' {print $1}'`
-        commentLine=`expr $grafanaLine - 1`
-        sed -i -e "${commentLine}s/.*//" ${metricsFile}
-        endOfGrafanaLine=`grep -n "\/grafana>" ${metricsFile} | awk -F: ' {print $1}'`
-        afterGrafanaLine=`expr $endOfGrafanaLine + 1`
-        sed -i -e "${afterGrafanaLine}s/.*//" ${metricsFile}
     fi
+
+    influxLine=`grep -n "reporter name=\"influxdb\"" ${metricsFile} | awk -F: ' {print $1}'`
+    commentLine=`expr $influxLine - 1`
+    sed -i -e "${commentLine}s/.*//" ${metricsFile}
+    endOfInfluxLine=`grep -n "\/reporter>" ${metricsFile} | awk -F: ' {print $1}'`
+    afterInfluxLine=`expr $endOfInfluxLine + 1`
+    sed -i -e "${afterInfluxLine}s/.*//" ${metricsFile}
+
+    grafanaLine=`grep -n "\<grafana u" ${metricsFile} | awk -F: ' {print $1}'`
+    commentLine=`expr $grafanaLine - 1`
+    sed -i -e "${commentLine}s/.*//" ${metricsFile}
+    endOfGrafanaLine=`grep -n "\/grafana>" ${metricsFile} | awk -F: ' {print $1}'`
+    afterGrafanaLine=`expr $endOfGrafanaLine + 1`
+    sed -i -e "${afterGrafanaLine}s/.*//" ${metricsFile}
+
 
 	ctx logger info "running $XAPDIR/bin/gs-agent.sh gsa.global.lus $global_lus_cnt gsa.lus $lus_cnt gsa.global.gsm $global_gsm_cnt gsa.gsm $gsm_cnt gsa.gsc $gsc_cnt"
 
