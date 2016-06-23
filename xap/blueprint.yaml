@@ -172,7 +172,7 @@ node_templates:
             type: xap_type
             properties:
                 gsc_cnt: 1
-                GSC_JAVA_OPTIONS: -Xms128m -Xmx128m
+                GSC_JAVA_OPTIONS: -Xmx2048m -Xms2048m -Xmn512m
             relationships:
                 -   target: xap_container_vm
                     type: cloudify.relationships.contained_in
