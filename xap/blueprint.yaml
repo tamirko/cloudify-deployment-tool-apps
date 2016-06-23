@@ -235,6 +235,8 @@ node_templates:
                     type: cloudify.relationships.contained_in
                 -   target: webui
                     type: cloudify.relationships.depends_on
+                -   target: xap_container
+                    type: cloudify.relationships.connected_to
             interfaces:
                 cloudify.interfaces.lifecycle:
                   create: xap-client-scripts/install-xap-client.sh
@@ -246,7 +248,7 @@ node_templates:
                 -   target: xap_client_vm
                     type: cloudify.relationships.contained_in
                 -   target: xap_client
-                    type: cloudify.relationships.depends_on
+                    type: cloudify.relationships.connected_to
             interfaces:
                 cloudify.interfaces.lifecycle:
                   start:
