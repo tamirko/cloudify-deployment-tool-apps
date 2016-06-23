@@ -228,7 +228,6 @@ node_templates:
         xap_client_floatingip:
             type: cloudify.openstack.nodes.FloatingIP
 
-
         xap_client:
             type: xap_type
             relationships:
@@ -240,3 +239,16 @@ node_templates:
                 cloudify.interfaces.lifecycle:
                   create: xap-client-scripts/install-xap-client.sh
                   start: xap-client-scripts/start-xap-client.sh
+
+        wait_for_xap_client:
+            type: cloudify.nodes.Root
+            relationships:
+                -   target: xap_client_vm
+                    type: cloudify.relationships.contained_in
+                -   target: xap_client
+                    type: cloudify.relationships.depends_on
+            interfaces:
+                cloudify.interfaces.lifecycle:
+                  start:
+                    implementation: xap-client-scripts/set_containers_ips.py
+                    executor: central_deployment_agent

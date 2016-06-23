@@ -178,6 +178,7 @@ outputs:
 
         manager_public_address: { get_attribute: [floatingip, floating_ip_address] }
         client_public_address: { get_attribute: [xap_client_floatingip, floating_ip_address] }
+        container_instances: { get_attribute: [wait_for_xap_client, container_instances] }
         #butterfly_url: { concat: ['http://', { get_attribute: [floatingip, floating_ip_address] },':', { get_property: [demo_shell, port] }] }
         #ip: {  get_attribute: [ floatingip,  floating_ip_address ] }
         #port: 7104
