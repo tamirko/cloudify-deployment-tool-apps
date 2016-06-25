@@ -192,7 +192,7 @@ node_templates:
                 -   target: xap_container
                     type: cloudify.relationships.connected_to
                 -   target: xap_client
-                    type: cloudify.relationships.connected_to
+                    type: xap_container_wait_for_client
             interfaces:
                 cloudify.interfaces.lifecycle:
                   start:
