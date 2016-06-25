@@ -173,9 +173,7 @@ node_templates:
             properties:
                 gsc_cnt: 1
                 GSA_JAVA_OPTIONS: -Xmx512m -Xms512m
-                LUS_JAVA_OPTIONS: -Xmx512m -Xms512m
-                GSM_JAVA_OPTIONS: -Xmx512m -Xms512m
-                GSC_JAVA_OPTIONS: -Xmx2048m -Xms2048m -Xmn512m
+                GSC_JAVA_OPTIONS:  -Xms2g -Xmx2g -Xmn512m
             relationships:
                 -   target: xap_container_vm
                     type: cloudify.relationships.contained_in
