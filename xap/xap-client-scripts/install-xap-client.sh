@@ -45,6 +45,9 @@ ctx logger info "About to post PUBLIC IP address ${PUBLIC_IP_ADDR}"
 ctx instance runtime-properties ip_address $PUBLIC_IP_ADDR
 ctx instance runtime-properties public_ip_address $PUBLIC_IP_ADDR
 
+client_ip_addr=`hostname -I | awk -F" " '{ print $1 }'`
+ctx instance runtime-properties client_ip_addr ${client_ip_addr}
+
 
 
 # Get XAP

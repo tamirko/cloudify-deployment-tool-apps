@@ -167,7 +167,6 @@ node_templates:
                   start: xap-scripts/start-xap.sh
                   stop: xap-scripts/stop-xap.sh
 
-
         xap_container:
             type: xap_type
             properties:
@@ -184,6 +183,20 @@ node_templates:
                   create: xap-scripts/install-xap.sh
                   start: xap-scripts/start-xap.sh
                   stop: xap-scripts/stop-xap.sh
+
+        wait_for_xap_container:
+            type: cloudify.nodes.Root
+            relationships:
+                -   target: xap_container_vm
+                    type: cloudify.relationships.contained_in
+                -   target: xap_container
+                    type: cloudify.relationships.connected_to
+                -   target: xap_client
+                    type: cloudify.relationships.connected_to
+            interfaces:
+                cloudify.interfaces.lifecycle:
+                  start:
+                    implementation: xap-client-scripts/start_wait_for_xap_container.sh
 
         webui:
             type: xap_webui_type
