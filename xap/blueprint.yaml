@@ -193,10 +193,6 @@ node_templates:
                     type: cloudify.relationships.connected_to
                 -   target: xap_client
                     type: xap_container_wait_for_client
-            interfaces:
-                cloudify.interfaces.lifecycle:
-                  start:
-                    implementation: xap-client-scripts/start_wait_for_xap_container.sh
 
         webui:
             type: xap_webui_type
