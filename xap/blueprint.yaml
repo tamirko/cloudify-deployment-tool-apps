@@ -206,6 +206,16 @@ node_templates:
                 - target: xap_management
                   type: cloudify.relationships.depends_on
 
+        wait_for_xap_ui:
+            type: cloudify.nodes.Root
+            relationships:
+                -   target: xap_management_vm
+                    type: cloudify.relationships.contained_in
+                -   target: webui
+                    type: cloudify.relationships.connected_to
+                -   target: xap_client
+                    type: xap_ui_wait_for_client
+
         demo_shell:
             type: demo_shell_type
             interfaces:

@@ -143,7 +143,15 @@ relationships:
                 postconfigure:
                     implementation: xap-scripts/get_locators.py
                     inputs: {}
+
     xap_container_wait_for_client:
+        derived_from: cloudify.relationships.connected_to
+        source_interfaces:
+            cloudify.interfaces.relationship_lifecycle:
+                postconfigure:
+                    implementation: xap-client-scripts/get_client_vm_key.sh
+
+    xap_ui_wait_for_client:
         derived_from: cloudify.relationships.connected_to
         source_interfaces:
             cloudify.interfaces.relationship_lifecycle:
