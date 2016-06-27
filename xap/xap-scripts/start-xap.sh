@@ -102,7 +102,6 @@ if [ "$PS" = "" ]; then  #no gsa running already
         #Container
         ctx logger info "Configuring influxdb and grafana in a container"
         sudo sed -i -e "s/localhost/$XAP_LOOKUP_LOCATORS/g" ${metricsFile}
-        ctx instance runtime_properties container_ip_address ${IP_ADDR}
     fi
 
     influxLine=`grep -n "reporter name=\"influxdb\"" ${metricsFile} | awk -F: ' {print $1}'`

@@ -12,6 +12,10 @@ imports:
 inputs:
     xap_management_agent_user:
         default: "ubuntu"
+    gsc_cnt:
+        default: 1
+    gsc_java_options:
+        default: -Xms2g -Xmx2g -Xmn512m
     xap_management_vm_image:
         type: string
     xap_management_vm_flavor:
@@ -170,9 +174,9 @@ node_templates:
         xap_container:
             type: xap_type
             properties:
-                gsc_cnt: 1
+                gsc_cnt:  { get_input: gsc_cnt }
                 GSA_JAVA_OPTIONS: -Xmx512m -Xms512m
-                GSC_JAVA_OPTIONS:  -Xms2g -Xmx2g -Xmn512m
+                GSC_JAVA_OPTIONS:  { get_input: gsc_java_options }
             relationships:
                 -   target: xap_container_vm
                     type: cloudify.relationships.contained_in
