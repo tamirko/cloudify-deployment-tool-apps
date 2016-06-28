@@ -133,7 +133,7 @@ node_templates:
         xap_container_vm:
             type: cloudify.openstack.nodes.Server
             instances:
-                deploy: 2
+                deploy: 2 # ReplaceThis
             properties:
                 cloudify_agent:
                     user: { get_input: xap_container_agent_user }
