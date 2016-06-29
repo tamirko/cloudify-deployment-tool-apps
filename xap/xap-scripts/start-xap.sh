@@ -79,7 +79,7 @@ if [ "$PS" = "" ]; then  #no gsa running already
         sudo /etc/init.d/influxdb start
         currStatus=$?
         ctx logger info "After influxdb start currStatus ${currStatus}"
-
+        sleep 40s
         /usr/bin/influx -execute "CREATE DATABASE mydb"
         currStatus=$?
         ctx logger info "After CREATE DATABASE currStatus ${currStatus}"
